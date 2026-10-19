@@ -5,11 +5,11 @@
     <resultMap id="BaseResultMap" type="com.counselor.entity.StudentArchive">
         <id column="id" property="id"/>
         <result column="student_id" property="studentId"/>
-        <result column="archive_type" property="archiveType"/>
-        <result column="archive_name" property="archiveName"/>
+        <result column="category" property="archiveType"/>
+        <result column="title" property="archiveName"/>
         <result column="file_path" property="filePath"/>
         <result column="description" property="description"/>
-        <result column="upload_date" property="uploadDate"/>
+        <result column="occur_date" property="uploadDate"/>
         <result column="operator" property="operator"/>
         <result column="create_time" property="createTime"/>
         <result column="student_no" property="studentNo"/>
@@ -18,59 +18,60 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        a.id, a.student_id, a.archive_type, a.archive_name, a.file_path, a.description,
-        a.upload_date, a.operator, a.create_time
+        a.id, a.student_id, a.category, a.title, a.file_path, a.description,
+        a.occur_date, a.operator, a.create_time
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>,
                s.student_no AS student_no, s.name AS student_name, s.class_name AS class_name
-        FROM student_archive a
+        FROM student_record a
         LEFT JOIN student s ON a.student_id = s.id
-        WHERE a.id = #{id}
+        WHERE a.record_type = 'ARCHIVE' AND a.id = #{id}
     </select>
 
     <select id="selectList" parameterType="com.counselor.entity.StudentArchive" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/>,
                s.student_no AS student_no, s.name AS student_name, s.class_name AS class_name
-        FROM student_archive a
+        FROM student_record a
         LEFT JOIN student s ON a.student_id = s.id
         <where>
+            a.record_type = 'ARCHIVE'
             <if test="studentId != null">AND a.student_id = #{studentId}</if>
-            <if test="archiveType != null and archiveType != ''">AND a.archive_type = #{archiveType}</if>
-            <if test="archiveName != null and archiveName != ''">AND a.archive_name LIKE CONCAT('%', #{archiveName}, '%')</if>
+            <if test="archiveType != null and archiveType != ''">AND a.category = #{archiveType}</if>
+            <if test="archiveName != null and archiveName != ''">AND a.title LIKE CONCAT('%', #{archiveName}, '%')</if>
             <if test="operator != null and operator != ''">AND a.operator LIKE CONCAT('%', #{operator}, '%')</if>
             <if test="studentNo != null and studentNo != ''">AND s.student_no LIKE CONCAT('%', #{studentNo}, '%')</if>
             <if test="studentName != null and studentName != ''">AND s.name LIKE CONCAT('%', #{studentName}, '%')</if>
         </where>
-        ORDER BY a.upload_date DESC, a.id DESC
+        ORDER BY a.occur_date DESC, a.id DESC
     </select>
 
     <insert id="insert" parameterType="com.counselor.entity.StudentArchive" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO student_archive (student_id, archive_type, archive_name, file_path, description, upload_date, operator)
-        VALUES (#{studentId}, #{archiveType}, #{archiveName}, #{filePath}, #{description}, #{uploadDate}, #{operator})
+        INSERT INTO student_record (record_type, student_id, category, title, file_path, description, occur_date, operator)
+        VALUES ('ARCHIVE', #{studentId}, #{archiveType}, #{archiveName}, #{filePath}, #{description}, #{uploadDate}, #{operator})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.counselor.entity.StudentArchive">
-        UPDATE student_archive
+        UPDATE student_record
         <set>
             <if test="studentId != null">student_id = #{studentId},</if>
-            <if test="archiveType != null">archive_type = #{archiveType},</if>
-            <if test="archiveName != null">archive_name = #{archiveName},</if>
+            <if test="archiveType != null">category = #{archiveType},</if>
+            <if test="archiveName != null">title = #{archiveName},</if>
             <if test="filePath != null">file_path = #{filePath},</if>
             <if test="description != null">description = #{description},</if>
-            <if test="uploadDate != null">upload_date = #{uploadDate},</if>
+            <if test="uploadDate != null">occur_date = #{uploadDate},</if>
             <if test="operator != null">operator = #{operator},</if>
         </set>
-        WHERE id = #{id}
+        WHERE record_type = 'ARCHIVE' AND id = #{id}
     </update>
 
     <delete id="deleteByPrimaryKey">
-        DELETE FROM student_archive WHERE id = #{id}
+        DELETE FROM student_record WHERE record_type = 'ARCHIVE' AND id = #{id}
     </delete>
 
     <select id="countAll" resultType="java.lang.Long">
-        SELECT COUNT(1) FROM student_archive
+        SELECT COUNT(1) FROM student_record WHERE record_type = 'ARCHIVE'
     </select>
 
 </mapper>

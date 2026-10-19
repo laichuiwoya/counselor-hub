@@ -10,10 +10,11 @@
     <meta name="ctx" content="${ctx}">
     <title>工作流程纪要 - 辅导员管理系统</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
-<body>
-<div class="content">
+<body class="system-page list-page">
+<div class="content page-container">
+    <header class="page-heading"><h1>工作流程纪要</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/workflow/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增纪要</a></div></header>
     <div class="card">
         <form method="get" action="${ctx}/workflow/list" id="searchForm">
             <div class="table-toolbar">
@@ -31,9 +32,7 @@
                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button>
                     <a href="${ctx}/workflow/list" class="btn btn-default btn-sm"><i class="fa fa-rotate-left"></i>重置</a>
                 </div>
-                <div class="right">
-                    <a href="${ctx}/workflow/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增纪要</a>
-                </div>
+
             </div>
         </form>
 
@@ -118,7 +117,7 @@
 </div>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="${ctx}/static/js/common.js"></script>
+<script src="${ctx}/static/js/common.js?v=20261019b"></script>
 <script>
     function delWorkflow(id) {
         App.del('/workflow/delete', id, function () { location.reload(); });

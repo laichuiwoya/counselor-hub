@@ -127,11 +127,54 @@ $(function () {
 
     // 侧边栏折叠
     $(document).on('click', '.menu-toggle', function () {
-        $('.app').toggleClass('sidebar-collapsed');
+        $('.app').toggleClass(window.matchMedia('(max-width: 768px)').matches ? 'sidebar-open' : 'sidebar-collapsed');
     });
 
-    // 移动端展开侧边栏
-    $(document).on('click', '.menu-toggle-mobile', function () {
-        $('.app').toggleClass('sidebar-open');
+});
+
+App.changeRecordStatus = function (url, id, status) {
+    App.confirm({title: '确认操作', content: '将状态更新为“' + status + '”？', onOk: function () {
+        App.post(url, {id: id, status: status}, function () { window.location.reload(); });
+    }});
+};
+
+$(function () {
+    $('[data-pick-student]').on('click', function () {
+        var picker = window.open(App.ctx() + '/student/list?pick=1', 'studentPicker', 'width=1100,height=720');
+        if (!picker) App.toast('请允许弹出学生选择窗口', 'error');
+    });
+    if ($('[data-pick-student]').length) {
+        window.setStudent = function (id, no, name) {
+            $('#studentId').val(id);
+            $('#selectedStudent').val(name + ' · ' + no);
+        };
+    }
+    $('form[method="post"]').on('submit', function (event) {
+        var student = this.querySelector('input[name="studentId"]');
+        if (student && !student.value) {
+            event.preventDefault(); App.toast('请选择学生', 'error'); return;
+        }
+        var start = this.querySelector('[name="startDate"]');
+        var end = this.querySelector('[name="endDate"]');
+        if (start && end && start.value && end.value && end.value < start.value) {
+            event.preventDefault(); App.toast('结束日期不能早于开始日期', 'error'); end.focus();
+        }
+    });
+    $('.data-table .actions [title]').each(function () {
+        $(this).attr('aria-label', this.title);
+    });
+    $('.form-group').each(function (index) {
+        var label = $(this).children('label').first();
+        var control = $(this).find('input:not([type="hidden"]),select,textarea').first();
+        if (label.length && control.length) {
+            if (!control.attr('id')) control.attr('id', 'field-' + index);
+            label.attr('for', control.attr('id'));
+        }
+    });
+    $('.filter-input').each(function () {
+        if (!this.getAttribute('aria-label')) this.setAttribute('aria-label', this.placeholder || (this.options && this.options[0].text) || this.name);
+    });
+    $(document).on('keydown', function (event) {
+        if (event.key === 'Escape') $('.modal-mask.open .btn-cancel').trigger('click');
     });
 });

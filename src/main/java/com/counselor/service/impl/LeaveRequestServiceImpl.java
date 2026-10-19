@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(LeaveRequest record) {
         if (record.getStatus() == null || record.getStatus().isEmpty()) {
             record.setStatus("待审批");
@@ -39,11 +41,13 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(LeaveRequest record) {
         return leaveRequestMapper.updateByPrimaryKey(record) > 0;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean changeStatus(Long id, String status) {
         LeaveRequest r = new LeaveRequest();
         r.setId(id);
@@ -52,6 +56,7 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long id) {
         return leaveRequestMapper.deleteByPrimaryKey(id) > 0;
     }

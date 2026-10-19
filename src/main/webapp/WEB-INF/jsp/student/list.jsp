@@ -10,11 +10,12 @@
     <meta name="ctx" content="${ctx}">
     <title>学生基本管理 - 辅导员管理系统</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
     <c:if test="${param.pick eq '1'}"><script>window.PICK_MODE=true;</script></c:if>
 </head>
-<body>
-<div class="content">
+<body class="system-page list-page">
+<div class="content page-container">
+    <header class="page-heading"><h1>学生基本管理</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/student/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增学生</a></div></header>
     <div class="card">
         <form method="get" action="${ctx}/student/list" id="searchForm">
             <c:if test="${param.pick eq '1'}"><input type="hidden" name="pick" value="1"></c:if>
@@ -39,9 +40,7 @@
                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button>
                     <a href="${ctx}/student/list" class="btn btn-default btn-sm"><i class="fa fa-rotate-left"></i>重置</a>
                 </div>
-                <div class="right">
-                    <a href="${ctx}/student/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增学生</a>
-                </div>
+
             </div>
         </form>
 
@@ -145,10 +144,21 @@
 </div>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="${ctx}/static/js/common.js"></script>
+<script src="${ctx}/static/js/common.js?v=20261019b"></script>
 <script>
     function delStudent(id) {
-        App.del('/student/delete', id, function () { location.reload(); });
+        App.confirm({
+            title: '移除学生',
+            content: '确认将该学生从学生列表和学生选择中移除？已有档案、奖惩、请假、资助和就业记录将保留。',
+            okText: '确认移除',
+            danger: true,
+            onOk: function () {
+                App.post('/student/delete', {id: id}, function () {
+                    App.toast('已移除学生，历史业务记录保留', 'success');
+                    location.reload();
+                });
+            }
+        });
     }
     function pickStudent(id, no, name, cls) {
         if (window.opener && typeof window.opener.setStudent === 'function') {

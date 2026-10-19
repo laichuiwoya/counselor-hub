@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class RewardPunishmentServiceImpl implements RewardPunishmentService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(RewardPunishment record) {
         if (record.getStatus() == null || record.getStatus().isEmpty()) {
             record.setStatus("生效");
@@ -39,11 +41,13 @@ public class RewardPunishmentServiceImpl implements RewardPunishmentService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(RewardPunishment record) {
         return rewardPunishmentMapper.updateByPrimaryKey(record) > 0;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long id) {
         return rewardPunishmentMapper.deleteByPrimaryKey(id) > 0;
     }

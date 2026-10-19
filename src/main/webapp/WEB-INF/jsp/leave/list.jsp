@@ -10,11 +10,13 @@
     <meta name="ctx" content="${ctx}">
     <title>请假管理 - 辅导员管理系统</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
-<body>
-<div class="content">
+<body class="system-page list-page">
+<div class="content page-container">
+    <header class="page-heading"><h1>请假管理</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/leave/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增请假</a></div></header>
     <div class="card">
+<nav class="status-tabs" aria-label="状态筛选"><a href="${ctx}/leave/list" class="${empty query.status ? 'active' : ''}">全部</a><a href="${ctx}/leave/list?status=待审批" class="${query.status eq '待审批' ? 'active' : ''}">待审批</a><a href="${ctx}/leave/list?status=已批准" class="${query.status eq '已批准' ? 'active' : ''}">已批准</a><a href="${ctx}/leave/list?status=已销假" class="${query.status eq '已销假' ? 'active' : ''}">已销假</a><a href="${ctx}/leave/list?status=已驳回" class="${query.status eq '已驳回' ? 'active' : ''}">已驳回</a></nav>
         <form method="get" action="${ctx}/leave/list" id="searchForm">
             <div class="table-toolbar">
                 <div class="filter-group">
@@ -36,9 +38,7 @@
                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button>
                     <a href="${ctx}/leave/list" class="btn btn-default btn-sm"><i class="fa fa-rotate-left"></i>重置</a>
                 </div>
-                <div class="right">
-                    <a href="${ctx}/leave/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增请假</a>
-                </div>
+
             </div>
         </form>
 
@@ -75,9 +75,9 @@
                     <td class="actions">
                         <a href="${ctx}/leave/detail?id=${r.id}" class="btn-link btn-sm" title="详情"><i class="fa fa-eye"></i></a>
                         <a href="${ctx}/leave/edit?id=${r.id}" class="btn-link btn-sm" title="编辑"><i class="fa fa-edit"></i></a>
-                        <button type="button" class="btn-link btn-sm" title="批准" onclick="changeStatus(${r.id}, '已批准')"><i class="fa fa-check"></i></button>
-                        <button type="button" class="btn-link btn-sm" title="驳回" onclick="changeStatus(${r.id}, '已驳回')"><i class="fa fa-ban"></i></button>
-                        <button type="button" class="btn-link btn-sm" title="销假" onclick="changeStatus(${r.id}, '已销假')"><i class="fa fa-rotate-left"></i></button>
+                        <c:if test="${r.status eq '待审批'}"><button type="button" class="btn-link btn-sm" title="批准" onclick="changeStatus(${r.id}, '已批准')"><i class="fa fa-check"></i></button></c:if>
+                        <c:if test="${r.status eq '待审批'}"><button type="button" class="btn-link btn-sm" title="驳回" onclick="changeStatus(${r.id}, '已驳回')"><i class="fa fa-ban"></i></button></c:if>
+                        <c:if test="${r.status eq '已批准'}"><button type="button" class="btn-link btn-sm" title="销假" onclick="changeStatus(${r.id}, '已销假')"><i class="fa fa-rotate-left"></i></button></c:if>
                         <button type="button" class="btn-link danger btn-sm" title="删除" onclick="delLeave(${r.id})"><i class="fa fa-trash"></i></button>
                     </td>
                 </tr>
@@ -128,13 +128,13 @@
 </div>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="${ctx}/static/js/common.js"></script>
+<script src="${ctx}/static/js/common.js?v=20261019b"></script>
 <script>
     function delLeave(id) {
         App.del('/leave/delete', id, function () { location.reload(); });
     }
     function changeStatus(id, status) {
-        App.post('/leave/changeStatus', {id: id, status: status}, function () { location.reload(); });
+        App.changeRecordStatus('/leave/changeStatus', id, status);
     }
 </script>
 </body>

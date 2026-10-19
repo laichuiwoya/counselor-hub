@@ -33,7 +33,7 @@
         SELECT <include refid="Base_Column_List"/>, u.real_name AS counselor_name
         FROM student s
         LEFT JOIN sys_user u ON s.counselor_id = u.id
-        WHERE s.id = #{id}
+        WHERE s.id = #{id} AND s.deleted = 0
     </select>
 
     <select id="selectByStudentNo" resultMap="BaseResultMap">
@@ -48,6 +48,7 @@
         FROM student s
         LEFT JOIN sys_user u ON s.counselor_id = u.id
         <where>
+            s.deleted = 0
             <if test="studentNo != null and studentNo != ''">AND s.student_no LIKE CONCAT('%', #{studentNo}, '%')</if>
             <if test="name != null and name != ''">AND s.name LIKE CONCAT('%', #{name}, '%')</if>
             <if test="gender != null and gender != ''">AND s.gender = #{gender}</if>
@@ -91,16 +92,17 @@
             <if test="counselorId != null">counselor_id = #{counselorId},</if>
             <if test="status != null">status = #{status},</if>
         </set>
-        WHERE id = #{id}
+        WHERE id = #{id} AND deleted = 0
     </update>
 
-    <delete id="deleteByPrimaryKey">
-        DELETE FROM student WHERE id = #{id}
-    </delete>
+    <update id="deleteByPrimaryKey">
+        UPDATE student SET deleted = 1 WHERE id = #{id} AND deleted = 0
+    </update>
 
     <select id="countAll" parameterType="com.counselor.entity.Student" resultType="java.lang.Long">
         SELECT COUNT(1) FROM student
         <where>
+            deleted = 0
             <if test="status != null and status != ''">AND status = #{status}</if>
         </where>
     </select>
@@ -108,6 +110,7 @@
     <select id="countByCollege" resultType="java.util.Map">
         SELECT college AS name, COUNT(1) AS value
         FROM student
+        WHERE deleted = 0
         GROUP BY college
         ORDER BY value DESC
     </select>
@@ -115,13 +118,14 @@
     <select id="countByGender" resultType="java.util.Map">
         SELECT gender AS name, COUNT(1) AS value
         FROM student
+        WHERE deleted = 0
         GROUP BY gender
     </select>
 
     <select id="countByPolitical" resultType="java.util.Map">
         SELECT political_status AS name, COUNT(1) AS value
         FROM student
-        WHERE political_status IS NOT NULL AND political_status != ''
+        WHERE deleted = 0 AND political_status IS NOT NULL AND political_status != ''
         GROUP BY political_status
         ORDER BY value DESC
     </select>

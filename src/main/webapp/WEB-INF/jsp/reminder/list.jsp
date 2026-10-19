@@ -10,11 +10,13 @@
     <meta name="ctx" content="${ctx}">
     <title>工作提示 - 辅导员管理系统</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
-<body>
-<div class="content">
+<body class="system-page list-page">
+<div class="content page-container">
+    <header class="page-heading"><h1>工作提示</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/reminder/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增提示</a></div></header>
     <div class="card">
+<nav class="status-tabs" aria-label="状态筛选"><a href="${ctx}/reminder/list" class="${empty query.status ? 'active' : ''}">全部</a><a href="${ctx}/reminder/list?status=未完成" class="${query.status eq '未完成' ? 'active' : ''}">未完成</a><a href="${ctx}/reminder/list?status=待办" class="${query.status eq '待办' ? 'active' : ''}">待办</a><a href="${ctx}/reminder/list?status=进行中" class="${query.status eq '进行中' ? 'active' : ''}">进行中</a><a href="${ctx}/reminder/list?status=已完成" class="${query.status eq '已完成' ? 'active' : ''}">已完成</a></nav>
         <form method="get" action="${ctx}/reminder/list" id="searchForm">
             <div class="table-toolbar">
                 <div class="filter-group">
@@ -35,6 +37,7 @@
                     </select>
                     <select class="filter-input" name="status">
                         <option value="">全部状态</option>
+                        <option value="未完成" ${query.status eq '未完成' ? 'selected':''}>未完成（待办、进行中）</option>
                         <option value="待办" ${query.status eq '待办' ? 'selected':''}>待办</option>
                         <option value="进行中" ${query.status eq '进行中' ? 'selected':''}>进行中</option>
                         <option value="已完成" ${query.status eq '已完成' ? 'selected':''}>已完成</option>
@@ -42,9 +45,7 @@
                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button>
                     <a href="${ctx}/reminder/list" class="btn btn-default btn-sm"><i class="fa fa-rotate-left"></i>重置</a>
                 </div>
-                <div class="right">
-                    <a href="${ctx}/reminder/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增提示</a>
-                </div>
+
             </div>
         </form>
 
@@ -133,7 +134,7 @@
 </div>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="${ctx}/static/js/common.js"></script>
+<script src="${ctx}/static/js/common.js?v=20261019b"></script>
 <script>
     function delReminder(id) {
         App.del('/reminder/delete', id, function () { location.reload(); });

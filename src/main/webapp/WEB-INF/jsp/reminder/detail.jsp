@@ -10,13 +10,13 @@
     <meta name="ctx" content="${ctx}">
     <title>工作提示详情 - ${reminder.title}</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
-<body>
-<div class="content" style="max-width:920px;">
-    <div class="welcome-banner" style="background:linear-gradient(135deg,#2b5aed,#5b3fd6);padding:24px 26px;">
+<body class="system-page detail-page">
+<div class="content page-container">
+    <div class="record-heading">
         <div style="display:flex;align-items:center;gap:16px;position:relative;z-index:2;">
-            <div style="width:64px;height:64px;border-radius:14px;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;"><i class="fa fa-bell"></i></div>
+            <div class="record-mark"><i class="fa fa-bell"></i></div>
             <div>
                 <h3 style="margin:0 0 6px;">${reminder.title}
                     <span class="badge ${reminder.priority eq '高' ? 'badge-danger' : reminder.priority eq '中' ? 'badge-warning' : 'badge-secondary'}">${reminder.priority}</span>
@@ -52,6 +52,9 @@
             <div style="white-space:pre-wrap;line-height:1.8;">${reminder.content}</div>
         </div>
     </div>
+<div class="card"><div class="record-actions"><c:if test="${reminder.status eq '待办'}"><button type="button" class="btn btn-default" onclick="App.changeRecordStatus('/reminder/changeStatus',${reminder.id},'进行中')">开始办理</button></c:if><c:if test="${reminder.status eq '待办'}"><button type="button" class="btn btn-default" onclick="App.changeRecordStatus('/reminder/changeStatus',${reminder.id},'已完成')">标记完成</button></c:if><c:if test="${reminder.status eq '进行中'}"><button type="button" class="btn btn-default" onclick="App.changeRecordStatus('/reminder/changeStatus',${reminder.id},'已完成')">标记完成</button></c:if><a href="${ctx}/reminder/list" class="btn btn-default">返回列表</a></div></div>
 </div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="${ctx}/static/js/common.js?v=20261019b"></script>
 </body>
 </html>

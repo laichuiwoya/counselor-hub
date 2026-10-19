@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
@@ -30,6 +31,7 @@ public class VisitorLogServiceImpl implements VisitorLogService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(VisitorLog record) {
         if (record.getStatus() == null || record.getStatus().isEmpty()) {
             record.setStatus("在访");
@@ -38,11 +40,13 @@ public class VisitorLogServiceImpl implements VisitorLogService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(VisitorLog record) {
         return visitorLogMapper.updateByPrimaryKey(record) > 0;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean changeStatus(Long id, String status) {
         VisitorLog v = new VisitorLog();
         v.setId(id);
@@ -51,6 +55,7 @@ public class VisitorLogServiceImpl implements VisitorLogService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long id) {
         return visitorLogMapper.deleteByPrimaryKey(id) > 0;
     }

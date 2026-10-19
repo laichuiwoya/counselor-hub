@@ -6,6 +6,7 @@ import com.counselor.mapper.SysUserMapper;
 import com.counselor.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(SysUser user) {
         if (user.getPassword() == null || user.getPassword().isEmpty()) {
             user.setPassword(Constants.DEFAULT_PWD_MD5);
@@ -55,6 +57,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(SysUser user) {
         // 这里 password 字段为明文，由调用方控制是否修改密码
         if (user.getPassword() != null && !user.getPassword().isEmpty() && user.getPassword().length() != 32) {
@@ -64,6 +67,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updatePassword(Long id, String oldPwd, String newPwd) {
         SysUser user = sysUserMapper.selectByPrimaryKey(id);
         if (user == null) {
@@ -77,6 +81,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long id) {
         return sysUserMapper.deleteByPrimaryKey(id) > 0;
     }

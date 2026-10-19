@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,16 +38,19 @@ public class WorkflowMinutesServiceImpl implements WorkflowMinutesService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(WorkflowMinutes record) {
         return workflowMinutesMapper.insert(record) > 0;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(WorkflowMinutes record) {
         return workflowMinutesMapper.updateByPrimaryKey(record) > 0;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long id) {
         return workflowMinutesMapper.deleteByPrimaryKey(id) > 0;
     }

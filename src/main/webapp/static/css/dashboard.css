@@ -1,0 +1,15 @@
+
+.desk { max-width:1600px; margin:0 auto; }
+.desk-metrics,.desk-priorities { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; margin:0 0 28px; }
+.desk-metric { display:flex; align-items:center; gap:16px; min-height:112px; padding:24px; background:#fff; border:1px solid var(--border); border-radius:10px; color:var(--text-muted); }
+.desk-icon { display:flex; align-items:center; justify-content:center; width:36px; height:36px; flex-shrink:0; color:#7c8ca4; font-size:17px; }
+.desk-metric>div { flex:1; min-width:0; font-size:12px; }
+.desk-metric>div>span { display:block; line-height:20px; }
+.desk-metric strong { display:flex; align-items:baseline; gap:5px; color:#2d394d; font-size:28px; font-weight:500; line-height:36px; margin-top:6px; font-variant-numeric:tabular-nums; }
+.desk-metric small { font-size:11px; font-weight:400; color:#9ba5b4; }
+.desk-metric>.fa { font-size:11px; color:#b4bdca; }
+.desk-metric:hover { border-color:#bdcbdf; color:var(--text-main); }
+.desk-section-heading { margin-bottom:16px; }.desk h2 { font-size:14px; font-weight:500; margin:0; }
+.desk-records { display:grid; grid-template-columns:1fr 1fr; gap:18px; }.desk-records .card { min-width:0; }.desk .todo-list li { padding:14px 0; border-bottom:1px solid #f0f2f5; }.desk .todo-list .pri-dot { width:5px; height:5px; }.desk .todo-list .t { font-size:12px; }.desk .todo-list .t a { color:#4c5b72; }.desk .todo-list .d { font-size:11px; margin-top:6px; }.desk .todo-list .badge { flex-shrink:0; }.desk .card-header { padding:18px 22px; }.desk .card-title { font-size:13px; font-weight:500; }
+@media(max-width:1100px) { .desk-metrics,.desk-priorities { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:640px) { .desk-records { grid-template-columns:1fr; }.desk-metric,.desk-priority { padding:16px; }.desk-date { font-size:11px; } }

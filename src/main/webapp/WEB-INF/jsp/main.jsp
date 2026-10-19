@@ -11,7 +11,7 @@
     <meta name="ctx" content="${ctx}">
     <title>辅导员管理系统</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
 <body>
 <div class="app" id="app">
@@ -28,24 +28,27 @@
                 <div class="role">${user.role eq 'admin' ? '系统管理员' : '辅导员'}</div>
             </div>
         </div>
-        <ul class="sidebar-menu" id="sideMenu">
-            <li class="nav-header label-hide">工作台</li>
-            <li><a href="javascript:nav('${ctx}/dashboard','工作台','工作台')"><i class="fa fa-tachometer-alt"></i><span class="label-hide">工作台</span></a></li>
-            <li class="nav-header label-hide">学生管理</li>
-            <li><a href="javascript:nav('${ctx}/student/list','学生基本管理','学生 / 基本管理')"><i class="fa fa-users"></i><span class="label-hide">学生基本管理</span></a></li>
-            <li><a href="javascript:nav('${ctx}/reward/list','学生奖惩管理','学生 / 奖惩管理')"><i class="fa fa-trophy"></i><span class="label-hide">学生奖惩管理</span></a></li>
-            <li><a href="javascript:nav('${ctx}/archive/list','学生档案管理','学生 / 档案管理')"><i class="fa fa-folder-open"></i><span class="label-hide">学生档案管理</span></a></li>
-            <li class="nav-header label-hide">日常工作</li>
-            <li><a href="javascript:nav('${ctx}/reminder/list','工作提示','日常 / 工作提示')"><i class="fa fa-bell"></i><span class="label-hide">工作提示</span></a></li>
-            <li><a href="javascript:nav('${ctx}/workflow/list','工作流程纪要','日常 / 流程纪要')"><i class="fa fa-clipboard-list"></i><span class="label-hide">工作流程纪要</span></a></li>
-            <li><a href="javascript:nav('${ctx}/leave/list','请假管理','日常 / 请假管理')"><i class="fa fa-calendar-times"></i><span class="label-hide">请假管理</span></a></li>
-            <li><a href="javascript:nav('${ctx}/visitor/list','访客登记','日常 / 访客登记')"><i class="fa fa-user-plus"></i><span class="label-hide">访客登记</span></a></li>
-            <li class="nav-header label-hide">资助与就业</li>
-            <li><a href="javascript:nav('${ctx}/aid/list','困难资助','资助 / 困难资助')"><i class="fa fa-hand-holding-heart"></i><span class="label-hide">困难资助</span></a></li>
-            <li><a href="javascript:nav('${ctx}/employment/list','就业跟踪','就业 / 就业跟踪')"><i class="fa fa-briefcase"></i><span class="label-hide">就业跟踪</span></a></li>
+        <ul class="sidebar-menu" id="sideMenu" aria-label="主导航">
+            <li class="nav-header label-hide">总览</li>
+            <li><a href="javascript:nav('${ctx}/dashboard','工作台','工作台')" data-path="${ctx}/dashboard" data-title="工作台" data-crumb="工作台"><i class="fa fa-tachometer-alt"></i><span class="label-hide">工作台</span></a></li>
+            <li class="nav-header label-hide">学生信息</li>
+            <li><a href="javascript:nav('${ctx}/student/list','学生基本管理','学生信息 / 学生基本管理')" data-path="${ctx}/student/list" data-title="学生基本管理" data-crumb="学生信息 / 学生基本管理"><i class="fa fa-users"></i><span class="label-hide">学生基本管理</span></a></li>
+            <li><a href="javascript:nav('${ctx}/archive/list','学生档案管理','学生信息 / 学生档案管理')" data-path="${ctx}/archive/list" data-title="学生档案管理" data-crumb="学生信息 / 学生档案管理"><i class="fa fa-folder-open"></i><span class="label-hide">学生档案管理</span></a></li>
+            <li><a href="javascript:nav('${ctx}/reward/list','学生奖惩管理','学生信息 / 学生奖惩管理')" data-path="${ctx}/reward/list" data-title="学生奖惩管理" data-crumb="学生信息 / 学生奖惩管理"><i class="fa fa-trophy"></i><span class="label-hide">学生奖惩管理</span></a></li>
+            <li class="nav-header label-hide">日常事务</li>
+            <li><a href="javascript:nav('${ctx}/reminder/list','工作提示','日常事务 / 工作提示')" data-path="${ctx}/reminder/list" data-title="工作提示" data-crumb="日常事务 / 工作提示"><i class="fa fa-bell"></i><span class="label-hide">工作提示</span></a></li>
+            <li><a href="javascript:nav('${ctx}/workflow/list','工作流程纪要','日常事务 / 工作流程纪要')" data-path="${ctx}/workflow/list" data-title="工作流程纪要" data-crumb="日常事务 / 工作流程纪要"><i class="fa fa-clipboard-list"></i><span class="label-hide">工作流程纪要</span></a></li>
+            <li><a href="javascript:nav('${ctx}/leave/list','请假管理','日常事务 / 请假管理')" data-path="${ctx}/leave/list" data-title="请假管理" data-crumb="日常事务 / 请假管理"><i class="fa fa-calendar-times"></i><span class="label-hide">请假管理</span></a></li>
+            <li><a href="javascript:nav('${ctx}/visitor/list','访客登记','日常事务 / 访客登记')" data-path="${ctx}/visitor/list" data-title="访客登记" data-crumb="日常事务 / 访客登记"><i class="fa fa-user-plus"></i><span class="label-hide">访客登记</span></a></li>
+            <li class="nav-header label-hide">帮扶与发展</li>
+            <li><a href="javascript:nav('${ctx}/aid/list','困难资助','帮扶与发展 / 困难资助')" data-path="${ctx}/aid/list" data-title="困难资助" data-crumb="帮扶与发展 / 困难资助"><i class="fa fa-hand-holding-heart"></i><span class="label-hide">困难资助</span></a></li>
+            <li><a href="javascript:nav('${ctx}/employment/list','就业跟踪','帮扶与发展 / 就业跟踪')" data-path="${ctx}/employment/list" data-title="就业跟踪" data-crumb="帮扶与发展 / 就业跟踪"><i class="fa fa-briefcase"></i><span class="label-hide">就业跟踪</span></a></li>
             <c:if test="${user.role eq 'admin'}">
-                <li class="nav-header label-hide">系统</li>
-                <li><a href="javascript:nav('${ctx}/user/list','系统用户','系统 / 用户管理')"><i class="fa fa-user-cog"></i><span class="label-hide">系统用户</span></a></li>
+            <li class="nav-header label-hide">系统管理</li>
+            <li><a href="javascript:nav('${ctx}/user/list','系统用户','系统管理 / 系统用户')" data-path="${ctx}/user/list" data-title="系统用户" data-crumb="系统管理 / 系统用户"><i class="fa fa-user-cog"></i><span class="label-hide">系统用户</span></a></li>
+            <c:if test="${sessionScope.loginUser.role eq 'admin'}">
+            <li><a href="javascript:nav('${ctx}/operation-log/list','操作日志','系统管理 / 操作日志')" data-path="${ctx}/operation-log/list" data-title="操作日志" data-crumb="系统管理 / 操作日志"><i class="fa fa-clipboard-list"></i><span class="label-hide">操作日志</span></a></li>
+            </c:if>
             </c:if>
         </ul>
     </aside>
@@ -59,10 +62,6 @@
             <div class="navbar-right">
                 <div class="nav-icon" title="刷新" onclick="refreshFrame()"><i class="fa fa-rotate-right"></i></div>
                 <div class="nav-icon" title="全屏" onclick="toggleFullscreen()"><i class="fa fa-expand"></i></div>
-                <div class="nav-icon" title="消息" onclick="App.toast('暂无新消息','info')">
-                    <i class="fa fa-bell"></i>
-                    <span class="dot"></span>
-                </div>
                 <div class="user-dropdown">
                     <div class="head">
                         <span class="avatar">${fn:substring(user.realName, 0, 1)}</span>
@@ -115,21 +114,43 @@
 .content-frame { background: var(--content-bg); }
 </style>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="${ctx}/static/js/common.js"></script>
+<script src="${ctx}/static/js/common.js?v=20261019b"></script>
 <script>
-    function nav(url, title, crumb) {
-        document.getElementById('contentFrame').src = url;
-        $('#pageTitle').text(title);
-        $('#pageCrumb').text(crumb || title);
-        $('#sideMenu li a').removeClass('active');
+    function syncNavigation(url, title, crumb) {
+        var target = new URL(url, window.location.href);
+        var matched = null;
+        $('#sideMenu li a').removeClass('active').removeAttr('aria-current');
         $('#sideMenu li a').each(function () {
-            if ($(this).attr('onclick') && $(this).attr('onclick').indexOf(url) > -1) {
-                $(this).addClass('active');
+            var menuPath = this.dataset.path;
+            if (!menuPath) return;
+            var menuUrl = new URL(menuPath, window.location.href);
+            // Details and filtered lists belong to the same sidebar module.
+            var modulePath = menuUrl.pathname.replace(/\/list$/, '');
+            if (target.pathname === menuUrl.pathname ||
+                (menuUrl.pathname.endsWith('/list') && target.pathname.startsWith(modulePath + '/'))) {
+                matched = { element: this, title: this.dataset.title, crumb: this.dataset.crumb };
             }
         });
+        if (matched) {
+            $(matched.element).addClass('active').attr('aria-current', 'page');
+            title = matched.title;
+            crumb = matched.crumb;
+        }
+        $('#pageTitle').text(title);
+        $('#pageCrumb').text(crumb || title);
         // 移动端收起
         $('.app').removeClass('sidebar-open');
     }
+    function nav(url, title, crumb) {
+        syncNavigation(url, title, crumb);
+        document.getElementById('contentFrame').src = url;
+    }
+    // Keep navigation aligned after forms, detail links, and redirects inside the frame.
+    document.getElementById('contentFrame').addEventListener('load', function () {
+        try {
+            syncNavigation(this.contentWindow.location.href);
+        } catch (error) { /* An external page does not belong to the system menu. */ }
+    });
     function refreshFrame() {
         document.getElementById('contentFrame').contentWindow.location.reload();
     }
@@ -156,8 +177,7 @@
         });
     }
     $(function () {
-        // 初始激活工作台
-        $('#sideMenu li a').first().addClass('active');
+        syncNavigation(document.getElementById('contentFrame').contentWindow.location.href, '工作台', '工作台');
     });
 </script>
 </body>

@@ -10,11 +10,13 @@
     <meta name="ctx" content="${ctx}">
     <title>困难资助 - 辅导员管理系统</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
-<body>
-<div class="content">
+<body class="system-page list-page">
+<div class="content page-container">
+    <header class="page-heading"><h1>困难资助</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/aid/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增资助</a></div></header>
     <div class="card">
+<nav class="status-tabs" aria-label="状态筛选"><a href="${ctx}/aid/list" class="${empty query.status ? 'active' : ''}">全部</a><a href="${ctx}/aid/list?status=待审核" class="${query.status eq '待审核' ? 'active' : ''}">待审核</a><a href="${ctx}/aid/list?status=已通过" class="${query.status eq '已通过' ? 'active' : ''}">已通过</a><a href="${ctx}/aid/list?status=已发放" class="${query.status eq '已发放' ? 'active' : ''}">已发放</a><a href="${ctx}/aid/list?status=已驳回" class="${query.status eq '已驳回' ? 'active' : ''}">已驳回</a></nav>
         <form method="get" action="${ctx}/aid/list" id="searchForm">
             <div class="table-toolbar">
                 <div class="filter-group">
@@ -43,9 +45,7 @@
                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button>
                     <a href="${ctx}/aid/list" class="btn btn-default btn-sm"><i class="fa fa-rotate-left"></i>重置</a>
                 </div>
-                <div class="right">
-                    <a href="${ctx}/aid/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增资助</a>
-                </div>
+
             </div>
         </form>
 
@@ -84,9 +84,9 @@
                     <td class="actions">
                         <a href="${ctx}/aid/detail?id=${a.id}" class="btn-link btn-sm" title="详情"><i class="fa fa-eye"></i></a>
                         <a href="${ctx}/aid/edit?id=${a.id}" class="btn-link btn-sm" title="编辑"><i class="fa fa-edit"></i></a>
-                        <button type="button" class="btn-link btn-sm" title="通过" onclick="changeStatus(${a.id}, '已通过')"><i class="fa fa-check"></i></button>
-                        <button type="button" class="btn-link btn-sm" title="驳回" onclick="changeStatus(${a.id}, '已驳回')"><i class="fa fa-ban"></i></button>
-                        <button type="button" class="btn-link btn-sm" title="发放" onclick="changeStatus(${a.id}, '已发放')"><i class="fa fa-money-bill-wave"></i></button>
+                        <c:if test="${a.status eq '待审核'}"><button type="button" class="btn-link btn-sm" title="通过" onclick="changeStatus(${a.id}, '已通过')"><i class="fa fa-check"></i></button></c:if>
+                        <c:if test="${a.status eq '待审核'}"><button type="button" class="btn-link btn-sm" title="驳回" onclick="changeStatus(${a.id}, '已驳回')"><i class="fa fa-ban"></i></button></c:if>
+                        <c:if test="${a.status eq '已通过'}"><button type="button" class="btn-link btn-sm" title="发放" onclick="changeStatus(${a.id}, '已发放')"><i class="fa fa-money-bill-wave"></i></button></c:if>
                         <button type="button" class="btn-link danger btn-sm" title="删除" onclick="delAid(${a.id})"><i class="fa fa-trash"></i></button>
                     </td>
                 </tr>
@@ -138,13 +138,13 @@
 </div>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="${ctx}/static/js/common.js"></script>
+<script src="${ctx}/static/js/common.js?v=20261019b"></script>
 <script>
     function delAid(id) {
         App.del('/aid/delete', id, function () { location.reload(); });
     }
     function changeStatus(id, status) {
-        App.post('/aid/changeStatus', {id: id, status: status}, function () { location.reload(); });
+        App.changeRecordStatus('/aid/changeStatus', id, status);
     }
 </script>
 </body>

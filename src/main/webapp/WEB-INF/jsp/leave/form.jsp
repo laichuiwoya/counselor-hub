@@ -13,10 +13,10 @@
     <meta name="ctx" content="${ctx}">
     <title>${isEdit ? '编辑' : '新增'}请假 - 辅导员管理系统</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
-<body>
-<div class="content" style="max-width:920px;">
+<body class="system-page form-page">
+<div class="content page-container">
     <div class="card">
         <div class="card-header">
             <span class="card-title"><i class="fa fa-calendar-times"></i>${isEdit ? '编辑请假' : '新增请假'}</span>
@@ -30,8 +30,8 @@
                 <div class="form-section-title">基本信息</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>学生ID <span class="req">*</span></label>
-                        <input type="number" class="form-control" name="studentId" value="${leave.studentId}" required placeholder="请输入学生ID">
+                        <label>学生 <span class="req">*</span></label>
+                        <input type="hidden" name="studentId" id="studentId" value="${leave.studentId}"><div class="student-picker"><input type="text" class="form-control" id="selectedStudent" value="<c:out value='${leave.studentName}'/>" readonly placeholder="请选择学生"><button type="button" class="btn btn-default" data-pick-student>选择学生</button></div>
                     </div>
                     <div class="form-group">
                         <label>审批人</label>
@@ -81,8 +81,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i>保 存</button>
-                    <a href="${ctx}/leave/list" class="btn btn-default"><i class="fa fa-times"></i>取 消</a>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i>保存</button>
+                    <a href="${ctx}/leave/list" class="btn btn-default"><i class="fa fa-times"></i>取消</a>
                 </div>
             </form>
         </div>
@@ -90,6 +90,6 @@
 </div>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="${ctx}/static/js/common.js"></script>
+<script src="${ctx}/static/js/common.js?v=20261019b"></script>
 </body>
 </html>

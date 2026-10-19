@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class EmploymentTrackServiceImpl implements EmploymentTrackService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(EmploymentTrack record) {
         if (record.getEmploymentStatus() == null || record.getEmploymentStatus().isEmpty()) {
             record.setEmploymentStatus("未就业");
@@ -39,11 +41,13 @@ public class EmploymentTrackServiceImpl implements EmploymentTrackService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(EmploymentTrack record) {
         return employmentTrackMapper.updateByPrimaryKey(record) > 0;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long id) {
         return employmentTrackMapper.deleteByPrimaryKey(id) > 0;
     }

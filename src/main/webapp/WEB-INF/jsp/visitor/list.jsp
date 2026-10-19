@@ -10,11 +10,13 @@
     <meta name="ctx" content="${ctx}">
     <title>访客登记 - 辅导员管理系统</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
-<body>
-<div class="content">
+<body class="system-page list-page">
+<div class="content page-container">
+    <header class="page-heading"><h1>访客登记</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/visitor/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增登记</a></div></header>
     <div class="card">
+<nav class="status-tabs" aria-label="状态筛选"><a href="${ctx}/visitor/list" class="${empty query.status ? 'active' : ''}">全部</a><a href="${ctx}/visitor/list?status=在访" class="${query.status eq '在访' ? 'active' : ''}">在访</a><a href="${ctx}/visitor/list?status=已离开" class="${query.status eq '已离开' ? 'active' : ''}">已离开</a></nav>
         <form method="get" action="${ctx}/visitor/list" id="searchForm">
             <div class="table-toolbar">
                 <div class="filter-group">
@@ -27,9 +29,7 @@
                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button>
                     <a href="${ctx}/visitor/list" class="btn btn-default btn-sm"><i class="fa fa-rotate-left"></i>重置</a>
                 </div>
-                <div class="right">
-                    <a href="${ctx}/visitor/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增登记</a>
-                </div>
+
             </div>
         </form>
 
@@ -118,7 +118,7 @@
 </div>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="${ctx}/static/js/common.js"></script>
+<script src="${ctx}/static/js/common.js?v=20261019b"></script>
 <script>
     function delVisitor(id) {
         App.del('/visitor/delete', id, function () { location.reload(); });

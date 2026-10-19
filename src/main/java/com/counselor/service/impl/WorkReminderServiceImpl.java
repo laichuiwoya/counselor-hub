@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class WorkReminderServiceImpl implements WorkReminderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(WorkReminder record) {
         if (record.getStatus() == null || record.getStatus().isEmpty()) {
             record.setStatus("待办");
@@ -49,11 +51,13 @@ public class WorkReminderServiceImpl implements WorkReminderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(WorkReminder record) {
         return workReminderMapper.updateByPrimaryKey(record) > 0;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean changeStatus(Long id, String status) {
         WorkReminder r = new WorkReminder();
         r.setId(id);
@@ -62,6 +66,7 @@ public class WorkReminderServiceImpl implements WorkReminderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long id) {
         return workReminderMapper.deleteByPrimaryKey(id) > 0;
     }

@@ -10,13 +10,13 @@
     <meta name="ctx" content="${ctx}">
     <title>学生详情 - ${student.name}</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
-<body>
-<div class="content" style="max-width:920px;">
-    <div class="welcome-banner" style="background:linear-gradient(135deg,#2b5aed,#5b3fd6);padding:24px 26px;">
+<body class="system-page detail-page">
+<div class="content page-container">
+    <div class="record-heading">
         <div style="display:flex;align-items:center;gap:16px;position:relative;z-index:2;">
-            <div style="width:64px;height:64px;border-radius:14px;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;">${student.name eq null ? '' : student.name.substring(0,1)}</div>
+            <div class="record-mark">${student.name eq null ? '' : student.name.substring(0,1)}</div>
             <div>
                 <h3 style="margin:0 0 6px;">${student.name}
                     <span class="badge" style="background:rgba(255,255,255,0.25);color:#fff;">${student.gender}</span>

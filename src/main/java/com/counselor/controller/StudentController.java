@@ -64,7 +64,9 @@ public class StudentController {
     @PostMapping("/delete")
     @ResponseBody
     public Result<Void> delete(@RequestParam Long id) {
-        return studentService.deleteById(id) ? Result.success() : Result.fail("删除失败");
+        return studentService.deleteById(id)
+                ? Result.success("已移除学生，历史业务记录保留", null)
+                : Result.fail("该学生不存在或已被移除，请刷新列表");
     }
 
     @GetMapping("/detail")

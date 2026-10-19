@@ -9,7 +9,7 @@
     <meta name="ctx" content="${ctx}">
     <title>404 - 页面未找到 - 辅导员管理系统</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
 <body>
 <div class="content" style="display:flex;align-items:center;justify-content:center;min-height:78vh;">

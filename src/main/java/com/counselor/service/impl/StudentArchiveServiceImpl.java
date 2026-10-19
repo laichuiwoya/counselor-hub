@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,7 @@ public class StudentArchiveServiceImpl implements StudentArchiveService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(StudentArchive record, MultipartFile file) {
         if (file != null && !file.isEmpty()) {
             String path = storeFile(file);
@@ -58,6 +60,7 @@ public class StudentArchiveServiceImpl implements StudentArchiveService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(StudentArchive record, MultipartFile file) {
         if (file != null && !file.isEmpty()) {
             String path = storeFile(file);
@@ -70,6 +73,7 @@ public class StudentArchiveServiceImpl implements StudentArchiveService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteById(Long id) {
         return studentArchiveMapper.deleteByPrimaryKey(id) > 0;
     }

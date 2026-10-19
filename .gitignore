@@ -1,11 +1,13 @@
 /target/
+/.build-check/
 /bin/
 /uploads/
 /*.log
 /.boot-smoke/
 
 # Tests and local development files
-/src/test/
+/logs/
+/.backups/
 /tools/smoke_test.py
 /.settings/
 /.classpath
@@ -20,3 +22,7 @@
 Thumbs.db
 .env
 .env.*
+
+/src/test/
+/tools/smoke-*.py
+

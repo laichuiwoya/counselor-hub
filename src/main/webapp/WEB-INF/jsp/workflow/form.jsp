@@ -12,10 +12,10 @@
     <meta name="ctx" content="${ctx}">
     <title>${isEdit ? '编辑' : '新增'}工作流程纪要 - 辅导员管理系统</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css">
+    <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
 </head>
-<body>
-<div class="content" style="max-width:920px;">
+<body class="system-page form-page">
+<div class="content page-container">
     <div class="card">
         <div class="card-header">
             <span class="card-title"><i class="fa fa-clipboard-list"></i>${isEdit ? '编辑工作流程纪要' : '新增工作流程纪要'}</span>
@@ -73,8 +73,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i>保 存</button>
-                    <a href="${ctx}/workflow/list" class="btn btn-default"><i class="fa fa-times"></i>取 消</a>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i>保存</button>
+                    <a href="${ctx}/workflow/list" class="btn btn-default"><i class="fa fa-times"></i>取消</a>
                 </div>
             </form>
         </div>
@@ -82,6 +82,6 @@
 </div>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="${ctx}/static/js/common.js"></script>
+<script src="${ctx}/static/js/common.js?v=20261019b"></script>
 </body>
 </html>
