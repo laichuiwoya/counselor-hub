@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.counselor.mapper.LeaveRequestMapper">
+
+    <resultMap id="BaseResultMap" type="com.counselor.entity.LeaveRequest">
+        <id column="id" property="id"/>
+        <result column="student_id" property="studentId"/>
+        <result column="leave_type" property="leaveType"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="days" property="days"/>
+        <result column="reason" property="reason"/>
+        <result column="status" property="status"/>
+        <result column="counselor_id" property="counselorId"/>
+        <result column="approve_time" property="approveTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="student_name" property="studentName"/>
+        <result column="student_no" property="studentNo"/>
+        <result column="counselor_name" property="counselorName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        l.id, l.student_id, l.leave_type, l.start_date, l.end_date, l.days,
+        l.reason, l.status, l.counselor_id, l.approve_time, l.create_time
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>,
+               s.name AS student_name, s.student_no AS student_no,
+               u.real_name AS counselor_name
+        FROM leave_request l
+        LEFT JOIN student s ON l.student_id = s.id
+        LEFT JOIN sys_user u ON l.counselor_id = u.id
+        WHERE l.id = #{id}
+    </select>
+
+    <select id="selectList" parameterType="com.counselor.entity.LeaveRequest" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>,
+               s.name AS student_name, s.student_no AS student_no,
+               u.real_name AS counselor_name
+        FROM leave_request l
+        LEFT JOIN student s ON l.student_id = s.id
+        LEFT JOIN sys_user u ON l.counselor_id = u.id
+        <where>
+            <if test="studentName != null and studentName != ''">AND s.name LIKE CONCAT('%', #{studentName}, '%')</if>
+            <if test="leaveType != null and leaveType != ''">AND l.leave_type = #{leaveType}</if>
+            <if test="status != null and status != ''">AND l.status = #{status}</if>
+            <if test="studentId != null">AND l.student_id = #{studentId}</if>
+            <if test="counselorId != null">AND l.counselor_id = #{counselorId}</if>
+        </where>
+        ORDER BY l.create_time DESC, l.id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.counselor.entity.LeaveRequest" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO leave_request (student_id, leave_type, start_date, end_date, days, reason, status, counselor_id)
+        VALUES (#{studentId}, #{leaveType}, #{startDate}, #{endDate}, #{days}, #{reason}, #{status}, #{counselorId})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.counselor.entity.LeaveRequest">
+        UPDATE leave_request
+        <set>
+            <if test="studentId != null">student_id = #{studentId},</if>
+            <if test="leaveType != null">leave_type = #{leaveType},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="days != null">days = #{days},</if>
+            <if test="reason != null">reason = #{reason},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="counselorId != null">counselor_id = #{counselorId},</if>
+            <if test="approveTime != null">approve_time = #{approveTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM leave_request WHERE id = #{id}
+    </delete>
+
+    <select id="countByStatus" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM leave_request WHERE status = #{status}
+    </select>
+
+</mapper>

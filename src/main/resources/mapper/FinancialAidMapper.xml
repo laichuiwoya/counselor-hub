@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.counselor.mapper.FinancialAidMapper">
+
+    <resultMap id="BaseResultMap" type="com.counselor.entity.FinancialAid">
+        <id column="id" property="id"/>
+        <result column="student_id" property="studentId"/>
+        <result column="aid_type" property="aidType"/>
+        <result column="amount" property="amount"/>
+        <result column="semester" property="semester"/>
+        <result column="family_income" property="familyIncome"/>
+        <result column="difficulty_level" property="difficultyLevel"/>
+        <result column="reason" property="reason"/>
+        <result column="status" property="status"/>
+        <result column="counselor_id" property="counselorId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="student_name" property="studentName"/>
+        <result column="student_no" property="studentNo"/>
+        <result column="counselor_name" property="counselorName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        f.id, f.student_id, f.aid_type, f.amount, f.semester, f.family_income,
+        f.difficulty_level, f.reason, f.status, f.counselor_id, f.create_time
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>,
+               s.name AS student_name, s.student_no AS student_no,
+               u.real_name AS counselor_name
+        FROM financial_aid f
+        LEFT JOIN student s ON f.student_id = s.id
+        LEFT JOIN sys_user u ON f.counselor_id = u.id
+        WHERE f.id = #{id}
+    </select>
+
+    <select id="selectList" parameterType="com.counselor.entity.FinancialAid" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>,
+               s.name AS student_name, s.student_no AS student_no,
+               u.real_name AS counselor_name
+        FROM financial_aid f
+        LEFT JOIN student s ON f.student_id = s.id
+        LEFT JOIN sys_user u ON f.counselor_id = u.id
+        <where>
+            <if test="studentName != null and studentName != ''">AND s.name LIKE CONCAT('%', #{studentName}, '%')</if>
+            <if test="aidType != null and aidType != ''">AND f.aid_type = #{aidType}</if>
+            <if test="difficultyLevel != null and difficultyLevel != ''">AND f.difficulty_level = #{difficultyLevel}</if>
+            <if test="status != null and status != ''">AND f.status = #{status}</if>
+            <if test="studentId != null">AND f.student_id = #{studentId}</if>
+            <if test="counselorId != null">AND f.counselor_id = #{counselorId}</if>
+        </where>
+        ORDER BY f.create_time DESC, f.id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.counselor.entity.FinancialAid" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO financial_aid (student_id, aid_type, amount, semester, family_income, difficulty_level, reason, status, counselor_id)
+        VALUES (#{studentId}, #{aidType}, #{amount}, #{semester}, #{familyIncome}, #{difficultyLevel}, #{reason}, #{status}, #{counselorId})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.counselor.entity.FinancialAid">
+        UPDATE financial_aid
+        <set>
+            <if test="studentId != null">student_id = #{studentId},</if>
+            <if test="aidType != null">aid_type = #{aidType},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="semester != null">semester = #{semester},</if>
+            <if test="familyIncome != null">family_income = #{familyIncome},</if>
+            <if test="difficultyLevel != null">difficulty_level = #{difficultyLevel},</if>
+            <if test="reason != null">reason = #{reason},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="counselorId != null">counselor_id = #{counselorId},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM financial_aid WHERE id = #{id}
+    </delete>
+
+    <select id="countByStatus" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM financial_aid WHERE status = #{status}
+    </select>
+
+</mapper>

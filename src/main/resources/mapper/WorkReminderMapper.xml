@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.counselor.mapper.WorkReminderMapper">
+
+    <resultMap id="BaseResultMap" type="com.counselor.entity.WorkReminder">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="type" property="type"/>
+        <result column="priority" property="priority"/>
+        <result column="due_date" property="dueDate"/>
+        <result column="status" property="status"/>
+        <result column="counselor_id" property="counselorId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="counselor_name" property="counselorName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        w.id, w.title, w.content, w.type, w.priority, w.due_date, w.status,
+        w.counselor_id, w.create_time
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>, u.real_name AS counselor_name
+        FROM work_reminder w
+        LEFT JOIN sys_user u ON w.counselor_id = u.id
+        WHERE w.id = #{id}
+    </select>
+
+    <select id="selectList" parameterType="com.counselor.entity.WorkReminder" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>, u.real_name AS counselor_name
+        FROM work_reminder w
+        LEFT JOIN sys_user u ON w.counselor_id = u.id
+        <where>
+            <if test="title != null and title != ''">AND w.title LIKE CONCAT('%', #{title}, '%')</if>
+            <if test="type != null and type != ''">AND w.type = #{type}</if>
+            <if test="priority != null and priority != ''">AND w.priority = #{priority}</if>
+            <if test="status != null and status != ''">AND w.status = #{status}</if>
+            <if test="counselorId != null">AND w.counselor_id = #{counselorId}</if>
+        </where>
+        ORDER BY
+            CASE w.priority WHEN '高' THEN 1 WHEN '中' THEN 2 WHEN '低' THEN 3 ELSE 4 END,
+            w.due_date ASC,
+            w.id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.counselor.entity.WorkReminder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO work_reminder (title, content, type, priority, due_date, status, counselor_id)
+        VALUES (#{title}, #{content}, #{type}, #{priority}, #{dueDate}, #{status}, #{counselorId})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.counselor.entity.WorkReminder">
+        UPDATE work_reminder
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="priority != null">priority = #{priority},</if>
+            <if test="dueDate != null">due_date = #{dueDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="counselorId != null">counselor_id = #{counselorId},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM work_reminder WHERE id = #{id}
+    </delete>
+
+    <select id="countByStatus" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM work_reminder WHERE status = #{status}
+    </select>
+
+</mapper>

@@ -1,0 +1,22 @@
+/target/
+/bin/
+/uploads/
+/*.log
+/.boot-smoke/
+
+# Tests and local development files
+/src/test/
+/tools/smoke_test.py
+/.settings/
+/.classpath
+/.project
+/.idea/
+/.vscode/
+*.iml
+*.bak
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+.env
+.env.*

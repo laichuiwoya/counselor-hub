@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.counselor.mapper.VisitorLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.counselor.entity.VisitorLog">
+        <id column="id" property="id"/>
+        <result column="visitor_name" property="visitorName"/>
+        <result column="phone" property="phone"/>
+        <result column="id_card" property="idCard"/>
+        <result column="visit_purpose" property="visitPurpose"/>
+        <result column="visit_object" property="visitObject"/>
+        <result column="visit_time" property="visitTime"/>
+        <result column="leave_time" property="leaveTime"/>
+        <result column="status" property="status"/>
+        <result column="counselor_id" property="counselorId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="counselor_name" property="counselorName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        v.id, v.visitor_name, v.phone, v.id_card, v.visit_purpose, v.visit_object,
+        v.visit_time, v.leave_time, v.status, v.counselor_id, v.create_time
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>, u.real_name AS counselor_name
+        FROM visitor_log v
+        LEFT JOIN sys_user u ON v.counselor_id = u.id
+        WHERE v.id = #{id}
+    </select>
+
+    <select id="selectList" parameterType="com.counselor.entity.VisitorLog" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>, u.real_name AS counselor_name
+        FROM visitor_log v
+        LEFT JOIN sys_user u ON v.counselor_id = u.id
+        <where>
+            <if test="visitorName != null and visitorName != ''">AND v.visitor_name LIKE CONCAT('%', #{visitorName}, '%')</if>
+            <if test="status != null and status != ''">AND v.status = #{status}</if>
+            <if test="counselorId != null">AND v.counselor_id = #{counselorId}</if>
+        </where>
+        ORDER BY v.visit_time DESC, v.id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.counselor.entity.VisitorLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO visitor_log (visitor_name, phone, id_card, visit_purpose, visit_object, visit_time, leave_time, status, counselor_id)
+        VALUES (#{visitorName}, #{phone}, #{idCard}, #{visitPurpose}, #{visitObject}, #{visitTime}, #{leaveTime}, #{status}, #{counselorId})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.counselor.entity.VisitorLog">
+        UPDATE visitor_log
+        <set>
+            <if test="visitorName != null">visitor_name = #{visitorName},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="idCard != null">id_card = #{idCard},</if>
+            <if test="visitPurpose != null">visit_purpose = #{visitPurpose},</if>
+            <if test="visitObject != null">visit_object = #{visitObject},</if>
+            <if test="visitTime != null">visit_time = #{visitTime},</if>
+            <if test="leaveTime != null">leave_time = #{leaveTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="counselorId != null">counselor_id = #{counselorId},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM visitor_log WHERE id = #{id}
+    </delete>
+
+    <select id="countByStatus" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM visitor_log WHERE status = #{status}
+    </select>
+
+</mapper>

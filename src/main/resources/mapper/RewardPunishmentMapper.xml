@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.counselor.mapper.RewardPunishmentMapper">
+
+    <resultMap id="BaseResultMap" type="com.counselor.entity.RewardPunishment">
+        <id column="id" property="id"/>
+        <result column="student_id" property="studentId"/>
+        <result column="type" property="type"/>
+        <result column="level" property="level"/>
+        <result column="name" property="name"/>
+        <result column="reason" property="reason"/>
+        <result column="occur_date" property="occurDate"/>
+        <result column="operator" property="operator"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="student_no" property="studentNo"/>
+        <result column="student_name" property="studentName"/>
+        <result column="class_name" property="className"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        r.id, r.student_id, r.type, r.level, r.name, r.reason, r.occur_date,
+        r.operator, r.status, r.create_time
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>,
+               s.student_no AS student_no, s.name AS student_name, s.class_name AS class_name
+        FROM reward_punishment r
+        LEFT JOIN student s ON r.student_id = s.id
+        WHERE r.id = #{id}
+    </select>
+
+    <select id="selectList" parameterType="com.counselor.entity.RewardPunishment" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>,
+               s.student_no AS student_no, s.name AS student_name, s.class_name AS class_name
+        FROM reward_punishment r
+        LEFT JOIN student s ON r.student_id = s.id
+        <where>
+            <if test="type != null and type != ''">AND r.type = #{type}</if>
+            <if test="level != null and level != ''">AND r.level LIKE CONCAT('%', #{level}, '%')</if>
+            <if test="status != null and status != ''">AND r.status = #{status}</if>
+            <if test="studentId != null">AND r.student_id = #{studentId}</if>
+            <if test="studentNo != null and studentNo != ''">AND s.student_no LIKE CONCAT('%', #{studentNo}, '%')</if>
+            <if test="studentName != null and studentName != ''">AND s.name LIKE CONCAT('%', #{studentName}, '%')</if>
+        </where>
+        ORDER BY r.occur_date DESC, r.id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.counselor.entity.RewardPunishment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO reward_punishment (student_id, type, level, name, reason, occur_date, operator, status)
+        VALUES (#{studentId}, #{type}, #{level}, #{name}, #{reason}, #{occurDate}, #{operator}, #{status})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.counselor.entity.RewardPunishment">
+        UPDATE reward_punishment
+        <set>
+            <if test="studentId != null">student_id = #{studentId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="reason != null">reason = #{reason},</if>
+            <if test="occurDate != null">occur_date = #{occurDate},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM reward_punishment WHERE id = #{id}
+    </delete>
+
+    <select id="countByType" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM reward_punishment WHERE type = #{type} AND status = '生效'
+    </select>
+
+</mapper>

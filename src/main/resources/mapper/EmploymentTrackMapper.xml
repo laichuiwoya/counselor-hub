@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.counselor.mapper.EmploymentTrackMapper">
+
+    <resultMap id="BaseResultMap" type="com.counselor.entity.EmploymentTrack">
+        <id column="id" property="id"/>
+        <result column="student_id" property="studentId"/>
+        <result column="employment_status" property="employmentStatus"/>
+        <result column="company" property="company"/>
+        <result column="position" property="position"/>
+        <result column="salary" property="salary"/>
+        <result column="city" property="city"/>
+        <result column="school" property="school"/>
+        <result column="major" property="major"/>
+        <result column="track_date" property="trackDate"/>
+        <result column="remark" property="remark"/>
+        <result column="counselor_id" property="counselorId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="student_name" property="studentName"/>
+        <result column="student_no" property="studentNo"/>
+        <result column="counselor_name" property="counselorName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        e.id, e.student_id, e.employment_status, e.company, e.position, e.salary,
+        e.city, e.school, e.major, e.track_date, e.remark, e.counselor_id, e.create_time
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>,
+               s.name AS student_name, s.student_no AS student_no,
+               u.real_name AS counselor_name
+        FROM employment_track e
+        LEFT JOIN student s ON e.student_id = s.id
+        LEFT JOIN sys_user u ON e.counselor_id = u.id
+        WHERE e.id = #{id}
+    </select>
+
+    <select id="selectList" parameterType="com.counselor.entity.EmploymentTrack" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>,
+               s.name AS student_name, s.student_no AS student_no,
+               u.real_name AS counselor_name
+        FROM employment_track e
+        LEFT JOIN student s ON e.student_id = s.id
+        LEFT JOIN sys_user u ON e.counselor_id = u.id
+        <where>
+            <if test="studentName != null and studentName != ''">AND s.name LIKE CONCAT('%', #{studentName}, '%')</if>
+            <if test="employmentStatus != null and employmentStatus != ''">AND e.employment_status = #{employmentStatus}</if>
+            <if test="studentId != null">AND e.student_id = #{studentId}</if>
+            <if test="counselorId != null">AND e.counselor_id = #{counselorId}</if>
+        </where>
+        ORDER BY e.track_date DESC, e.id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.counselor.entity.EmploymentTrack" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employment_track (student_id, employment_status, company, position, salary, city, school, major, track_date, remark, counselor_id)
+        VALUES (#{studentId}, #{employmentStatus}, #{company}, #{position}, #{salary}, #{city}, #{school}, #{major}, #{trackDate}, #{remark}, #{counselorId})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.counselor.entity.EmploymentTrack">
+        UPDATE employment_track
+        <set>
+            <if test="studentId != null">student_id = #{studentId},</if>
+            <if test="employmentStatus != null">employment_status = #{employmentStatus},</if>
+            <if test="company != null">company = #{company},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="salary != null">salary = #{salary},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="school != null">school = #{school},</if>
+            <if test="major != null">major = #{major},</if>
+            <if test="trackDate != null">track_date = #{trackDate},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="counselorId != null">counselor_id = #{counselorId},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM employment_track WHERE id = #{id}
+    </delete>
+
+    <select id="countByStatus" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM employment_track WHERE employment_status = #{status}
+    </select>
+
+</mapper>
