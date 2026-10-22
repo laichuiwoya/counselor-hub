@@ -15,6 +15,7 @@
 <body class="system-page list-page">
 <div class="content page-container">
     <header class="page-heading"><h1>请假管理</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/leave/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增请假</a></div></header>
+    <p class="list-sort-hint" style="color:#64748b;font-size:13px;margin:0 0 12px;">默认排序：待审批、已批准优先，同组按申请时间从新到旧。</p>
     <div class="card">
 <nav class="status-tabs" aria-label="状态筛选"><a href="${ctx}/leave/list" class="${empty query.status ? 'active' : ''}">全部</a><a href="${ctx}/leave/list?status=待审批" class="${query.status eq '待审批' ? 'active' : ''}">待审批</a><a href="${ctx}/leave/list?status=已批准" class="${query.status eq '已批准' ? 'active' : ''}">已批准</a><a href="${ctx}/leave/list?status=已销假" class="${query.status eq '已销假' ? 'active' : ''}">已销假</a><a href="${ctx}/leave/list?status=已驳回" class="${query.status eq '已驳回' ? 'active' : ''}">已驳回</a></nav>
         <form method="get" action="${ctx}/leave/list" id="searchForm">

@@ -140,6 +140,10 @@ App.changeRecordStatus = function (url, id, status) {
 
 $(function () {
     $('[data-pick-student]').on('click', function () {
+        if ($(this).is('[data-pick-student-modal]')) {
+            window.openStudentPicker(this);
+            return;
+        }
         var picker = window.open(App.ctx() + '/student/list?pick=1', 'studentPicker', 'width=1100,height=720');
         if (!picker) App.toast('请允许弹出学生选择窗口', 'error');
     });

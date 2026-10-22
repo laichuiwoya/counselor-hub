@@ -15,6 +15,7 @@
 <body class="system-page list-page">
 <div class="content page-container">
     <header class="page-heading"><h1>工作流程纪要</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/workflow/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增纪要</a></div></header>
+    <p class="list-sort-hint" style="color:#64748b;font-size:13px;margin:0 0 12px;">默认排序：会议日期从新到旧。</p>
     <div class="card">
         <form method="get" action="${ctx}/workflow/list" id="searchForm">
             <div class="table-toolbar">

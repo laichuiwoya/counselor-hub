@@ -15,6 +15,7 @@
 <body class="system-page list-page">
 <div class="content page-container">
     <header class="page-heading"><h1>困难资助</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/aid/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增资助</a></div></header>
+    <p class="list-sort-hint" style="color:#64748b;font-size:13px;margin:0 0 12px;">默认排序：待审核、已通过优先，同组按申请时间从新到旧。</p>
     <div class="card">
 <nav class="status-tabs" aria-label="状态筛选"><a href="${ctx}/aid/list" class="${empty query.status ? 'active' : ''}">全部</a><a href="${ctx}/aid/list?status=待审核" class="${query.status eq '待审核' ? 'active' : ''}">待审核</a><a href="${ctx}/aid/list?status=已通过" class="${query.status eq '已通过' ? 'active' : ''}">已通过</a><a href="${ctx}/aid/list?status=已发放" class="${query.status eq '已发放' ? 'active' : ''}">已发放</a><a href="${ctx}/aid/list?status=已驳回" class="${query.status eq '已驳回' ? 'active' : ''}">已驳回</a></nav>
         <form method="get" action="${ctx}/aid/list" id="searchForm">

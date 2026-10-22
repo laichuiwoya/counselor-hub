@@ -49,7 +49,7 @@
             <if test="studentId != null">AND l.student_id = #{studentId}</if>
             <if test="counselorId != null">AND l.counselor_id = #{counselorId}</if>
         </where>
-        ORDER BY l.create_time DESC, l.id DESC
+        ORDER BY CASE l.status WHEN '待审批' THEN 0 WHEN '已批准' THEN 1 ELSE 2 END, l.create_time DESC, l.id DESC
     </select>
 
     <insert id="insert" parameterType="com.counselor.entity.LeaveRequest" useGeneratedKeys="true" keyProperty="id">

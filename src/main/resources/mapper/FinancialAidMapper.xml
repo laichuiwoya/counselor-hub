@@ -50,7 +50,7 @@
             <if test="studentId != null">AND f.student_id = #{studentId}</if>
             <if test="counselorId != null">AND f.counselor_id = #{counselorId}</if>
         </where>
-        ORDER BY f.create_time DESC, f.id DESC
+        ORDER BY CASE f.status WHEN '待审核' THEN 0 WHEN '已通过' THEN 1 ELSE 2 END, f.create_time DESC, f.id DESC
     </select>
 
     <insert id="insert" parameterType="com.counselor.entity.FinancialAid" useGeneratedKeys="true" keyProperty="id">

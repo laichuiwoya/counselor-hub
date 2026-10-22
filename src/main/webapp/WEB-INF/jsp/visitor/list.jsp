@@ -15,6 +15,7 @@
 <body class="system-page list-page">
 <div class="content page-container">
     <header class="page-heading"><h1>访客登记</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/visitor/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增登记</a></div></header>
+    <p class="list-sort-hint" style="color:#64748b;font-size:13px;margin:0 0 12px;">默认排序：在访优先，同组按来访时间从新到旧。</p>
     <div class="card">
 <nav class="status-tabs" aria-label="状态筛选"><a href="${ctx}/visitor/list" class="${empty query.status ? 'active' : ''}">全部</a><a href="${ctx}/visitor/list?status=在访" class="${query.status eq '在访' ? 'active' : ''}">在访</a><a href="${ctx}/visitor/list?status=已离开" class="${query.status eq '已离开' ? 'active' : ''}">已离开</a></nav>
         <form method="get" action="${ctx}/visitor/list" id="searchForm">

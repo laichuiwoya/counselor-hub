@@ -15,6 +15,7 @@
 <body class="system-page list-page">
 <div class="content page-container">
     <header class="page-heading"><h1>学生档案管理</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/archive/add" class="btn btn-primary btn-sm"><i class="fa fa-folder-plus"></i>归档新档案</a></div></header>
+    <p class="list-sort-hint" style="color:#64748b;font-size:13px;margin:0 0 12px;">默认排序：上传日期从新到旧。</p>
     <div class="card">
         <form method="get" action="${ctx}/archive/list" id="searchForm">
             <div class="table-toolbar">

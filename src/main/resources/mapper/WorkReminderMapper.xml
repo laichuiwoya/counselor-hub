@@ -45,8 +45,9 @@
             <if test="counselorId != null">AND w.counselor_id = #{counselorId}</if>
         </where>
         ORDER BY
+            CASE WHEN w.status IN ('待办', '进行中') THEN 0 ELSE 1 END,
             CASE w.priority WHEN '高' THEN 1 WHEN '中' THEN 2 WHEN '低' THEN 3 ELSE 4 END,
-            w.due_date ASC,
+            CASE WHEN w.due_date IS NULL THEN 1 ELSE 0 END, w.due_date ASC,
             w.id DESC
     </select>
 

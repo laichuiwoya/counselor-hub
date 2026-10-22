@@ -38,7 +38,7 @@
             <if test="status != null and status != ''">AND v.status = #{status}</if>
             <if test="counselorId != null">AND v.counselor_id = #{counselorId}</if>
         </where>
-        ORDER BY v.visit_time DESC, v.id DESC
+        ORDER BY CASE WHEN v.status = '在访' THEN 0 ELSE 1 END, v.visit_time DESC, v.id DESC
     </select>
 
     <insert id="insert" parameterType="com.counselor.entity.VisitorLog" useGeneratedKeys="true" keyProperty="id">

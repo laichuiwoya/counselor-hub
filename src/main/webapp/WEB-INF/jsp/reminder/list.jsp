@@ -15,6 +15,7 @@
 <body class="system-page list-page">
 <div class="content page-container">
     <header class="page-heading"><h1>工作提示</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/reminder/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增提示</a></div></header>
+    <p class="list-sort-hint" style="color:#64748b;font-size:13px;margin:0 0 12px;">默认排序：未完成优先，再按优先级从高到低、截止日期从早到晚（无截止日期排后）。</p>
     <div class="card">
 <nav class="status-tabs" aria-label="状态筛选"><a href="${ctx}/reminder/list" class="${empty query.status ? 'active' : ''}">全部</a><a href="${ctx}/reminder/list?status=未完成" class="${query.status eq '未完成' ? 'active' : ''}">未完成</a><a href="${ctx}/reminder/list?status=待办" class="${query.status eq '待办' ? 'active' : ''}">待办</a><a href="${ctx}/reminder/list?status=进行中" class="${query.status eq '进行中' ? 'active' : ''}">进行中</a><a href="${ctx}/reminder/list?status=已完成" class="${query.status eq '已完成' ? 'active' : ''}">已完成</a></nav>
         <form method="get" action="${ctx}/reminder/list" id="searchForm">

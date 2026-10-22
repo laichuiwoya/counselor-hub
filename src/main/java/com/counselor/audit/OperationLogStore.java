@@ -54,7 +54,7 @@ public class OperationLogStore {
         args.add(size);
         args.add((long) (current - 1) * size);
         List<OperationLog> list = jdbc.query("SELECT l.*" + from + where
-                + " ORDER BY l.id DESC LIMIT ? OFFSET ?", ROW_MAPPER, args.toArray());
+                + " ORDER BY l.create_time DESC, l.id DESC LIMIT ? OFFSET ?", ROW_MAPPER, args.toArray());
         return new PageResult<>(list, total, current, size);
     }
 

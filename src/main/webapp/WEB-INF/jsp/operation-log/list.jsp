@@ -20,6 +20,7 @@
 <body class="system-page list-page">
 <div class="content page-container">
     <header class="page-heading"><h1>操作日志</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span></header>
+    <p class="list-sort-hint" style="color:#64748b;font-size:13px;margin:0 0 12px;">默认排序：操作时间从新到旧。</p>
     <div class="card">
         <form method="get" action="${ctx}/operation-log/list">
             <div class="table-toolbar"><div class="filter-group">

@@ -12,13 +12,16 @@
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="${ctx}/static/css/style.css?v=20261019b">
     <c:if test="${param.pick eq '1'}"><script>window.PICK_MODE=true;</script></c:if>
+    <c:if test="${param.embedded eq '1'}"><style>.page-heading-actions { display: none; } .page-container { padding: 20px; }</style></c:if>
 </head>
 <body class="system-page list-page">
 <div class="content page-container">
     <header class="page-heading"><h1>学生基本管理</h1><span class="page-count">共 <strong>${page.total}</strong> 条记录</span><div class="page-heading-actions"><a href="${ctx}/student/add" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i>新增学生</a></div></header>
+    <p class="list-sort-hint" style="color:#64748b;font-size:13px;margin:0 0 12px;">默认排序：学号升序。</p>
     <div class="card">
         <form method="get" action="${ctx}/student/list" id="searchForm">
             <c:if test="${param.pick eq '1'}"><input type="hidden" name="pick" value="1"></c:if>
+            <c:if test="${param.embedded eq '1'}"><input type="hidden" name="embedded" value="1"></c:if>
             <div class="table-toolbar">
                 <div class="filter-group">
                     <input type="text" class="filter-input" name="studentNo" placeholder="学号" value="${query.studentNo}">
@@ -38,7 +41,7 @@
                         <option value="退学" ${query.status eq '退学' ? 'selected':''}>退学</option>
                     </select>
                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button>
-                    <a href="${ctx}/student/list" class="btn btn-default btn-sm"><i class="fa fa-rotate-left"></i>重置</a>
+                    <a href="${ctx}/student/list${param.pick eq '1' ? '?pick=1' : ''}${param.pick eq '1' and param.embedded eq '1' ? '&amp;embedded=1' : ''}" class="btn btn-default btn-sm"><i class="fa fa-rotate-left"></i>重置</a>
                 </div>
 
             </div>
@@ -67,7 +70,7 @@
                 <tr>
                     <td class="row-idx">${(page.pageNum-1)*page.pageSize + vs.index + 1}</td>
                     <td>${s.studentNo}</td>
-                    <td><a href="${ctx}/student/detail?id=${s.id}">${s.name}</a></td>
+                    <td><c:choose><c:when test="${param.embedded eq '1'}"><c:out value="${s.name}"/></c:when><c:otherwise><a href="${ctx}/student/detail?id=${s.id}">${s.name}</a></c:otherwise></c:choose></td>
                     <td>
                         <span class="badge ${s.gender eq '男' ? 'badge-info' : 'badge-purple'}">${s.gender}</span>
                     </td>
@@ -82,7 +85,7 @@
                     </td>
                     <td class="actions">
                         <c:if test="${param.pick eq '1'}">
-                            <button type="button" class="btn-link btn-sm" title="选择该学生" onclick="pickStudent(${s.id},'${s.studentNo}','${s.name}','${s.className}')"><i class="fa fa-check-circle"></i>选择</button>
+                            <button type="button" class="btn-link btn-sm" title="选择该学生" data-student-id="${s.id}" data-student-no="<c:out value='${s.studentNo}'/>" data-student-name="<c:out value='${s.name}'/>" data-student-class="<c:out value='${s.className}'/>" onclick="pickStudent(this.dataset.studentId, this.dataset.studentNo, this.dataset.studentName, this.dataset.studentClass)"><i class="fa fa-check-circle"></i>选择</button>
                         </c:if>
                         <c:if test="${param.pick ne '1'}">
                             <a href="${ctx}/reward/add?studentId=${s.id}" class="btn-link btn-sm" title="奖惩"><i class="fa fa-trophy"></i></a>
@@ -114,6 +117,7 @@
                     <c:param name="className" value="${query.className}"/>
                     <c:param name="status" value="${query.status}"/>
                     <c:if test="${param.pick eq '1'}"><c:param name="pick" value="1"/></c:if>
+                    <c:if test="${param.embedded eq '1'}"><c:param name="embedded" value="1"/></c:if>
                 </c:url>
                 <c:choose>
                     <c:when test="${page.pageNum > 1}">
@@ -161,6 +165,10 @@
         });
     }
     function pickStudent(id, no, name, cls) {
+        if (window.parent !== window && typeof window.parent.selectAidStudent === 'function') {
+            window.parent.selectAidStudent(id, no, name);
+            return;
+        }
         if (window.opener && typeof window.opener.setStudent === 'function') {
             window.opener.setStudent(id, no, name, cls);
             window.close();
@@ -168,6 +176,11 @@
             App.toast('未找到父窗口，请通过奖惩表单页打开本页', 'error');
         }
     }
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && window.parent !== window && typeof window.parent.selectAidStudent === 'function') {
+            window.parent.document.querySelector('#studentPickerModal .btn-cancel').click();
+        }
+    });
 </script>
 </body>
 </html>

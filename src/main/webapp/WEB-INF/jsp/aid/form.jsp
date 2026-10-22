@@ -96,6 +96,53 @@
 </div>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="${ctx}/static/js/common.js?v=20261019b"></script>
+<script src="${ctx}/static/js/common.js?v=20261022a"></script>
+<style>
+    #studentPickerModal .modal-box { width: min(1200px, 96vw); max-width: 96vw; display: flex; flex-direction: column; }
+    #studentPickerModal iframe { width: 100%; height: 70vh; border: 0; border-radius: 0 0 12px 12px; }
+</style>
+<div id="studentPickerModal" class="modal-mask" role="dialog" aria-modal="true" aria-labelledby="studentPickerTitle">
+    <div class="modal-box">
+        <div class="modal-head"><span class="title" id="studentPickerTitle">选择学生</span><button type="button" class="close btn-cancel" aria-label="关闭学生选择">×</button></div>
+        <iframe title="学生筛选与选择"></iframe>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('[data-pick-student]').attr('data-pick-student-modal', '');
+        var modal = $('#studentPickerModal');
+        var trigger;
+        var previousOverflow;
+        function closePicker() {
+            modal.removeClass('open');
+            document.body.style.overflow = previousOverflow;
+            if (trigger) trigger.focus();
+        }
+        window.openStudentPicker = function (button) {
+            trigger = button;
+            previousOverflow = document.body.style.overflow;
+            document.body.style.overflow = 'hidden';
+            modal.addClass('open');
+            if (!modal.find('iframe').attr('src')) {
+                modal.find('iframe').attr('src', App.ctx() + '/student/list?pick=1&embedded=1');
+            }
+            modal.find('.btn-cancel').trigger('focus');
+        };
+        window.selectAidStudent = function (id, no, name) {
+            window.setStudent(id, no, name);
+            closePicker();
+        };
+        modal.find('.btn-cancel').on('click', closePicker);
+        modal.on('click', function (event) { if (event.target === this) closePicker(); });
+        modal.on('keydown', function (event) {
+            if (event.key === 'Tab') {
+                var close = modal.find('.btn-cancel')[0];
+                if (event.shiftKey && event.target === close) {
+                    event.preventDefault(); modal.find('iframe')[0].focus();
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>

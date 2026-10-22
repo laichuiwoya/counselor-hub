@@ -61,7 +61,7 @@
             <if test="status != null and status != ''">AND s.status = #{status}</if>
             <if test="counselorId != null">AND s.counselor_id = #{counselorId}</if>
         </where>
-        ORDER BY s.student_no ASC
+        ORDER BY s.student_no ASC, s.id ASC
     </select>
 
     <insert id="insert" parameterType="com.counselor.entity.Student" useGeneratedKeys="true" keyProperty="id">

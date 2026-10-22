@@ -41,7 +41,7 @@
                   OR phone LIKE CONCAT('%', #{keyword}, '%'))
             </if>
         </where>
-        ORDER BY id ASC
+        ORDER BY username ASC, id ASC
     </select>
 
     <insert id="insert" parameterType="com.counselor.entity.SysUser" useGeneratedKeys="true" keyProperty="id">

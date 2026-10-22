@@ -50,7 +50,7 @@
             <if test="studentId != null">AND e.student_id = #{studentId}</if>
             <if test="counselorId != null">AND e.counselor_id = #{counselorId}</if>
         </where>
-        ORDER BY e.occur_date DESC, e.id DESC
+        ORDER BY CASE WHEN e.status = '未就业' THEN 0 ELSE 1 END, e.occur_date DESC, e.id DESC
     </select>
 
     <insert id="insert" parameterType="com.counselor.entity.EmploymentTrack" useGeneratedKeys="true" keyProperty="id">
